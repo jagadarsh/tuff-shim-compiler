@@ -1,5 +1,5 @@
 name: build-image
-run-name: Build the shimboot disk image for octopus boards (GNOME + Debian 13)
+run-name: Build the shimboot disk image for octopus boards (GNOME Flashback + Debian 13)
 on:
   workflow_dispatch:
     inputs:
@@ -24,23 +24,6 @@ jobs:
         with:
           disable_man_db: 'true'
 
-      - name: Free disk space
-        run: |
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /opt/hostedtoolcache
-          sudo rm -rf /usr/local/.ghcup
-          sudo rm -rf /usr/local/share/boost
-          sudo rm -rf /usr/share/swift
-          sudo rm -rf /usr/lib/jvm
-          sudo rm -rf /usr/local/share/powershell
-          sudo rm -rf /home/runner/actions-runner/externals
-          sudo docker image prune --all --force
-          sudo apt-get clean
-          sudo rm -rf /var/lib/apt/lists/*
-          df -h
-
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
@@ -49,8 +32,6 @@ jobs:
           remove-dotnet: 'true'
           remove-android: 'true'
           remove-haskell: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'true'
 
       - name: download repo
         uses: actions/checkout@v4
@@ -59,7 +40,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get upgrade -y
-          sudo DEBUG=1 ./build_complete.sh ${{ matrix.board }} compress_img=1 quiet=1 desktop=gnome release=trixie
+          sudo DEBUG=1 ./build_complete.sh ${{ matrix.board }} compress_img=1 quiet=1 desktop=gnome-flashback release=trixie
 
       - name: upload img
         uses: actions/upload-artifact@v4
