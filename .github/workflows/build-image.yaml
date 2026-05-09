@@ -35,6 +35,7 @@ jobs:
           sudo rm -rf /usr/share/swift
           sudo rm -rf /usr/lib/jvm
           sudo rm -rf /usr/local/share/powershell
+          sudo rm -rf /home/runner/actions-runner/externals
           sudo docker image prune --all --force
           sudo apt-get clean
           sudo rm -rf /var/lib/apt/lists/*
@@ -43,7 +44,7 @@ jobs:
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
-          root-reserve-mb: 512
+          root-reserve-mb: 4096
           swap-size-mb: 1024
           remove-dotnet: 'true'
           remove-android: 'true'
